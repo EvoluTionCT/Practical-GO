@@ -1,6 +1,17 @@
 package main
 
-import "testing"
+import (
+	"net/http"
+	"testing"
+)
+
+type mockDoGet struct {
+
+}
+
+func (m mockDoGet) Do(url string) (*http.Response, error) {
+	return nil,nil
+}
 
 func TestGetPhotos(t *testing.T) {
 	slice := []Photo{}

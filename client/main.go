@@ -24,12 +24,15 @@ type Photo struct {
 const (
 	URL = "https://jsonplaceholder.typicode.com"
 )
+type Doer interface {
+	Do(url string) (*http.Response, error)
+}
 
 type DoGet struct {
 }
 
 type getTypicode struct {
-	client DoGet
+	client Doer
 }
 
 func (d DoGet) Do (url string) (*http.Response, error) {
