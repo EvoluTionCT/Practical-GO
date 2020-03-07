@@ -16,7 +16,7 @@ func (m mockDoGet) Do(url string) (*http.Response, error) {
 func TestGetPhotos(t *testing.T) {
 	slice := []Photo{}
 	tc := getTypicode{
-		client:DoGet{},
+		client:mockDoGet{},
 	}
 	err := tc.GetPhotos(&slice)
 
