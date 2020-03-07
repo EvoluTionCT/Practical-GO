@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"io/ioutil"
 	"net/http"
 	"testing"
 )
@@ -10,21 +12,22 @@ type mockDoGet struct {
 }
 
 func (m mockDoGet) Do(url string) (*http.Response, error) {
-	return nil,nil
+	return &http.Response{
+		Body:             ioutil.NopCloser(bytes.NewReader([]byte(
+			`[{
+			"title": "Hello"
+		  	}]`))),
+	},nil
 }
 
 func TestGetPhotos(t *testing.T) {
-	slice := []Photo{}
+	p := []Photo{}
 	tc := getTypicode{
 		client:mockDoGet{},
 	}
-	err := tc.GetPhotos(&slice)
+	tc.GetPhotos(&p)
 
-	if err != nil {
-		t.Error("Error Test Get Photos")
-	}
-
-	if len(slice) <= 0 {
+	if p[0].Title != "Hello" {
 		t.Error("expect to get a photo but it empty")
 	}
 }
