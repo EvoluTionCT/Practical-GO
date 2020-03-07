@@ -26,7 +26,6 @@ const (
 )
 
 type DoGet struct {
-
 }
 
 type getTypicode struct {

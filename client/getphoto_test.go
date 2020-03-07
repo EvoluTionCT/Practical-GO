@@ -4,7 +4,10 @@ import "testing"
 
 func TestGetPhotos(t *testing.T) {
 	slice := []Photo{}
-	err := GetPhotos(slice)
+	tc := getTypicode{
+		client:DoGet{},
+	}
+	err := tc.GetPhotos(&slice)
 
 	if err != nil {
 		t.Error("Error Test Get Photos")
