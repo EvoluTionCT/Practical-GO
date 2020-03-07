@@ -2,18 +2,26 @@ package main
 
 import (
 	"fmt"
-	"github.com/labstack/echo"
 	"log"
 	"net/http"
+
+	"github.com/EvoluTionCT/Practical-GO/typicode"
+	"github.com/labstack/echo"
 )
 
 func main() {
 	e := echo.New()
 	e.GET("/photos", func(context echo.Context) error {
-		pht := []byte(`{"title":"hello, it's me!!!"}`)
-		return context.JSON(http.StatusOK,pht)
+		tc := typicode.New("/photos")
+		p := []typicode.Photo{}
+		err := tc.Get(&p)
+		if err != nil {
+			return context.JSON(http.StatusInternalServerError, err)
+		}
+		return context.JSON(http.StatusOK, p)
 	})
 	fmt.Println("Starting...")
 
+	println()
 	log.Fatal(e.Start(":1234"))
 }
