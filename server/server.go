@@ -2,17 +2,18 @@ package main
 
 import (
 	"fmt"
+	"github.com/labstack/echo"
 	"log"
 	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/photos",func(w http.ResponseWriter,r *http.Request){
-		pht := []byte(`{"title":"Hello, It's me"}`)
-		w.WriteHeader(http.StatusOK)
-		w.Write(pht)
+	e := echo.New()
+	e.GET("/photos", func(context echo.Context) error {
+		pht := []byte(`{"title":"hello, it's me!!!"}`)
+		return context.JSON(http.StatusOK,pht)
 	})
 	fmt.Println("Starting...")
-	
-	log.Fatal(http.ListenAndServe(":1234",nil))
+
+	log.Fatal(e.Start(":1234"))
 }
