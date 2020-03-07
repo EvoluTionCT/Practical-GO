@@ -32,3 +32,15 @@ func main() {
 	}
 	fmt.Println("You're both boring; I'm leaving.")
 }
+func Go(fn func()) {
+	go func() {
+
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Printf("go-routine panic: %v\n%s", err, buf)
+			}
+		}()
+
+		fn()
+	}()
+}
