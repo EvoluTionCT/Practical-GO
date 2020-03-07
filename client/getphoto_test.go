@@ -8,7 +8,7 @@ import (
 )
 
 type mockDoGet struct {
-
+	Doer
 }
 
 func (m mockDoGet) Do(url string) (*http.Response, error) {

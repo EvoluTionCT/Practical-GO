@@ -29,18 +29,20 @@ type Doer interface {
 }
 
 type DoGet struct {
+
 }
 
 type getTypicode struct {
+	url string
 	client Doer
 }
 
 func (d DoGet) Do (url string) (*http.Response, error) {
-	return http.Get(url + "/photos")
+	return http.Get(url)
 }
 
-func (tc getTypicode) GetPhotos(p *[]Photo) error {
-	resp, err := tc.client.Do(URL)
+func (tc getTypicode) Get(p interface{}) error {
+	resp, err := tc.client.Do(tc.url)
 	if err != nil {
 		// handle error here.
 		return err
@@ -50,12 +52,22 @@ func (tc getTypicode) GetPhotos(p *[]Photo) error {
 	return json.NewDecoder(resp.Body).Decode(p)
 }
 
-func main() {
-	var p []Photo
-	t := getTypicode{
+func New(path string) getTypicode {
+	return getTypicode{
+		url:    URL + path,
 		client: DoGet{},
 	}
-	err := t.GetPhotos(&p)
+}
+
+func main() {
+	var p []Photo
+	t := New("/photos")
+	err := t.Get(&p)
+
+	tc := New("/albums")
+	var a []Album
+	err = tc.Get(&a)
+
 	if err != nil {
 		//handle here
 		log.Fatal(err)
