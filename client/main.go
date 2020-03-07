@@ -25,11 +25,20 @@ const (
 	URL = "https://jsonplaceholder.typicode.com"
 )
 
-type Clienter interface {
+type DoGet struct {
+
 }
 
-func GetPhotos(p *[]Photo) error {
-	resp, err := http.Get(URL + "/photos")
+type getTypicode struct {
+	client DoGet
+}
+
+func (d DoGet) Do (url string) (*http.Response, error) {
+	return http.Get(url + "/photos")
+}
+
+func (t getTypicode) GetPhotos(p *[]Photo) error {
+	resp, err := t.client.Do(URL)
 	if err != nil {
 		// handle error here.
 		return err
@@ -41,7 +50,10 @@ func GetPhotos(p *[]Photo) error {
 
 func main() {
 	var p []Photo
-	err := GetPhotos(&p)
+	t := getTypicode{
+		client: DoGet{},
+	}
+	err := t.GetPhotos(&p)
 	if err != nil {
 		//handle here
 		log.Fatal(err)
